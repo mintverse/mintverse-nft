@@ -24,6 +24,10 @@ contract MintverseNFTShared is MintverseNFT, ReentrancyGuard {
 
     using TokenIdentifiers for uint256;
 
+    event AddSharedProxyAddress(address _address);
+
+    event RemoveSharedProxyAddress(address _address);
+
     event CreatorChanged(uint256 indexed _id, address indexed _creator);
 
     mapping(uint256 => address) internal _creatorOverride;
@@ -72,6 +76,7 @@ contract MintverseNFTShared is MintverseNFT, ReentrancyGuard {
      */
     function addSharedProxyAddress(address _address) public onlyOwnerOrProxy {
         sharedProxyAddresses[_address] = true;
+        emit AddSharedProxyAddress(_address);
     }
 
     /**
@@ -82,6 +87,7 @@ contract MintverseNFTShared is MintverseNFT, ReentrancyGuard {
         onlyOwnerOrProxy
     {
         delete sharedProxyAddresses[_address];
+        emit RemoveSharedProxyAddress(_address);
     }
 
     /**
@@ -226,13 +232,6 @@ contract MintverseNFTShared is MintverseNFT, ReentrancyGuard {
         return _id.tokenCreator();
     }
 
-    function _requireMintable(address _address, uint256 _id) internal view {
-        require(
-            _isCreatorOrProxy(_id, _address),
-            "MintverseNFTShared#_requireMintable: ONLY_CREATOR_ALLOWED"
-        );
-    }
-
     function _remainingSupply(uint256 _id)
         internal
         view
@@ -263,5 +262,13 @@ contract MintverseNFTShared is MintverseNFT, ReentrancyGuard {
             return true;
         }
         return super._isProxyForUser(_user, _address);
+    }
+
+    /**
+     * @dev Get the index of a token
+     * @param _id   The token id to look up
+     */
+    function index(uint256 _id) public pure returns (uint256) {
+        return _id.tokenIndex();
     }
 }

@@ -45,6 +45,7 @@ contract ERC1155Tradable is
         string memory _symbol,
         address _proxyRegistryAddress
     ) ERC1155("") {
+        require(_proxyRegistryAddress != address(0), "_proxyRegistryAddress is a zerovalue");
         name = _name;
         symbol = _symbol;
         proxyRegistryAddress = _proxyRegistryAddress;

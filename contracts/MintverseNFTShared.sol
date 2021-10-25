@@ -24,6 +24,10 @@ contract MintverseNFTShared is MintverseNFT, ReentrancyGuard {
 
     using TokenIdentifiers for uint256;
 
+    event DisableMigrate();
+
+    event SetProxyRegistryAddress(address _address);
+
     event AddSharedProxyAddress(address _address);
 
     event RemoveSharedProxyAddress(address _address);
@@ -69,6 +73,7 @@ contract MintverseNFTShared is MintverseNFT, ReentrancyGuard {
      */
     function setProxyRegistryAddress(address _address) public onlyOwnerOrProxy {
         proxyRegistryAddress = _address;
+        emit SetProxyRegistryAddress(_address);
     }
 
     /**
@@ -95,6 +100,7 @@ contract MintverseNFTShared is MintverseNFT, ReentrancyGuard {
      */
     function disableMigrate() public onlyOwnerOrProxy {
         migrationTarget = MintverseNFTShared(address(0));
+        emit DisableMigrate();
     }
 
     /**

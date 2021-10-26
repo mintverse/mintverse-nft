@@ -148,6 +148,10 @@ contract MintverseNFTShared is MintverseNFT, ReentrancyGuard {
         uint256 _quantity,
         bytes memory _data
     ) public override nonReentrant creatorOnly(_id) {
+        require(
+            _quantity > 0, 
+            "MintverseNFTShared#mint: ZERO_QUANTITY_NOT_ALLOWED"
+        );
         _mint(_to, _id, _quantity, _data);
     }
 

@@ -20,14 +20,14 @@ library TokenIdentifiers {
 
     uint256 constant SUPPLY_MASK = (uint256(1) << SUPPLY_BITS) - 1;
     uint256 constant INDEX_MASK =
-        ((uint256(1) << INDEX_BITS) - 1) ^ SUPPLY_MASK;
+        (uint256(1) << (INDEX_BITS + SUPPLY_BITS) - 1) ^ SUPPLY_MASK;
 
     function tokenMaxSupply(uint256 _id) internal pure returns (uint256) {
         return _id & SUPPLY_MASK;
     }
 
     function tokenIndex(uint256 _id) internal pure returns (uint256) {
-        return _id & INDEX_MASK;
+        return (_id & INDEX_MASK) >> SUPPLY_BITS;
     }
 
     function tokenCreator(uint256 _id) internal pure returns (address) {
